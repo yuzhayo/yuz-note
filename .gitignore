@@ -41,6 +41,7 @@ build/generated/
 *.idb
 *.exp
 *.lib
+!development/Qt/**/*.lib
 *.log
 *.tlog
 *.lastbuildstate
