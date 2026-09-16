@@ -113,7 +113,7 @@ jobs:
       - name: Package release
         shell: pwsh
         run: |
-          $env:QT_DIR = "${{ env.Qt6_DIR }}/../../../.."
+          $env:QT_DIR = $env:QT_ROOT_DIR
           ./tools/Build-Release.ps1 `
             -Version '${{ steps.version.outputs.version }}' `
             -ReleaseNotes artifacts/release-notes.md
