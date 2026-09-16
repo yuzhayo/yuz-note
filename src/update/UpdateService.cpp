@@ -223,37 +223,29 @@ int UpdateService::downloadProgress() const
 
 void UpdateService::applyAndRestart()
 {
-    auto state = impl_->state;
-    auto alive = impl_->alive;
     Velopack::UpdateInfo info;
+    const std::string feed = impl_->feed.toStdString();
     {
-        std::lock_guard<std::mutex> lk(state->mutex);
-        if (!state->hasDownload || !state->pending) {
+        std::lock_guard<std::mutex> lk(impl_->state->mutex);
+        if (!impl_->state->hasDownload || !impl_->state->pending) {
             return;
         }
-        info = *state->pending;
+        info = *impl_->state->pending;
     }
-    std::thread([state, alive, info = std::move(info)] {
-        try {
-            auto source =
-                std::make_unique<Velopack::GithubSource>("", "", false);
-            Velopack::UpdateManager manager(std::move(source));
-            manager.WaitExitThenApplyUpdates(info, false, true, {});
-            QMetaObject::invokeMethod(
-                QCoreApplication::instance(), [] { QCoreApplication::quit(); },
-                Qt::QueuedConnection);
-        } catch (const std::exception &e) {
-            if (*alive) {
-                std::lock_guard<std::mutex> lk(state->mutex);
-                state->applyError = QString::fromUtf8(e.what());
-            }
-        } catch (...) {
-            if (*alive) {
-                std::lock_guard<std::mutex> lk(state->mutex);
-                state->applyError = QStringLiteral("unknown error");
-            }
-        }
-    }).detach();
+    try {
+        // This starts Update.exe and returns. It must happen before Qt exits:
+        // the updater waits for this process, applies the payload, then relaunches it.
+        auto source = std::make_unique<Velopack::GithubSource>(feed, "", false);
+        Velopack::UpdateManager manager(std::move(source));
+        manager.WaitExitThenApplyUpdates(info, false, true, {});
+        QCoreApplication::quit();
+    } catch (const std::exception &e) {
+        std::lock_guard<std::mutex> lk(impl_->state->mutex);
+        impl_->state->applyError = QString::fromUtf8(e.what());
+    } catch (...) {
+        std::lock_guard<std::mutex> lk(impl_->state->mutex);
+        impl_->state->applyError = QStringLiteral("unknown error");
+    }
 }
 
 QString UpdateService::applyError() const

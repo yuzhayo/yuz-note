@@ -300,19 +300,11 @@ void MainWindow::onPollUpdate()
                                  tr("Update failed:\n%1").arg(r.error));
             return;
         }
-        const auto answer = QMessageBox::question(
-            this, tr("Updates"),
-            tr("Download finished.\nRestart now to apply?"));
-        if (answer == QMessageBox::Yes) {
-            statusBar()->showMessage(tr("Restarting to apply update…"));
-            update_->applyAndRestart();
-            QTimer::singleShot(3000, this, [this] {
-                const QString err = update_->applyError();
-                if (!err.isEmpty()) {
-                    statusBar()->showMessage(tr("Restart failed: %1").arg(err),
-                                             8000);
-                }
-            });
+        statusBar()->showMessage(tr("Restarting to apply update…"));
+        update_->applyAndRestart();
+        const QString err = update_->applyError();
+        if (!err.isEmpty()) {
+            statusBar()->showMessage(tr("Restart failed: %1").arg(err), 8000);
         }
     }
 }
