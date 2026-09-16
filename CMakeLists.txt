@@ -14,6 +14,10 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(CompilerFlags)
 include(FetchCmarkGfm)
 
+set(YUZNOTE_QT_ROOT "${CMAKE_SOURCE_DIR}/development/Qt/6.8.3/msvc2022_64")
+if(EXISTS "${YUZNOTE_QT_ROOT}/lib/cmake/Qt6/Qt6Config.cmake")
+  list(PREPEND CMAKE_PREFIX_PATH "${YUZNOTE_QT_ROOT}")
+endif()
 find_package(Qt6 6.8 REQUIRED COMPONENTS Widgets Network)
 
 add_subdirectory(src)

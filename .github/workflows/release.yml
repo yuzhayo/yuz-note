@@ -33,15 +33,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Qt
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: '6.8.3'
-          host: 'windows'
-          target: 'desktop'
-          arch: 'win64_msvc2022_64'
-          setup-python: false
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
@@ -108,12 +99,12 @@ jobs:
         run: |
           cmake -S . -B release/build `
             -G 'Visual Studio 18 2026' -A x64 `
-            -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}/../.."
+            -DCMAKE_PREFIX_PATH="development/Qt/6.8.3/msvc2022_64"
 
       - name: Package release
         shell: pwsh
         run: |
-          $env:QT_DIR = $env:QT_ROOT_DIR
+          $env:QT_DIR = Join-Path $PWD 'development\Qt\6.8.3\msvc2022_64'
           ./tools/Build-Release.ps1 `
             -Version '${{ steps.version.outputs.version }}' `
             -ReleaseNotes artifacts/release-notes.md

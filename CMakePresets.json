@@ -1,0 +1,18 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "dev",
+      "displayName": "Local development",
+      "generator": "Visual Studio 18 2026",
+      "binaryDir": "${sourceDir}/release/build",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "${sourceDir}/development/Qt/6.8.3/msvc2022_64"
+      }
+    }
+  ]
+}

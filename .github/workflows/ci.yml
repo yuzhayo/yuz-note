@@ -20,15 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup Qt
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: '6.8.3'
-          host: 'windows'
-          target: 'desktop'
-          arch: 'win64_msvc2022_64'
-          setup-python: false
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
@@ -43,7 +34,7 @@ jobs:
         run: |
           cmake -S . -B release/build `
             -G 'Visual Studio 18 2026' -A x64 `
-            -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}/../.."
+            -DCMAKE_PREFIX_PATH="development/Qt/6.8.3/msvc2022_64"
 
       - name: Build
         shell: pwsh
@@ -56,5 +47,5 @@ jobs:
       - name: Viewer smoke test
         shell: pwsh
         run: |
-          $env:PATH = "${{ env.Qt6_DIR }}/../../../bin;$env:PATH"
+          $env:PATH = "development/Qt/6.8.3/msvc2022_64/bin;$env:PATH"
           & release\build\tests\viewer-smoke\Release\viewer-smoke.exe tests\corpus

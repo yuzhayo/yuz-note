@@ -39,14 +39,14 @@ embed web, slideshow media. **Masuk v1:** installer resmi Velopack via GitHub Re
 | MSVC | `14.51.36231`, `cl.exe` 4 varian host/target — **compile-proof lolos** (`YUZ-TOOLCHAIN-OK msvc=1951` via `VsDevCmd -arch=amd64`) |
 | Windows SDK | `10.0.26100.0` (`Include` + `Lib` ada) |
 | CMake | bawaan VS 18 Community (`.../CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe`) |
-| Qt | **6.8.3 LTS** `win64_msvc2022_64` di `C:\Qt\6.8.3\msvc2022_64` (`qmake`, `Qt6Config.cmake`, `Qt6Widgets.lib` terverifikasi; 0,3 GB ramping) |
+| Qt | **6.8.3 LTS** `win64_msvc2022_64` di `development/Qt/6.8.3/msvc2022_64` (`qmake`, `Qt6Config.cmake`, `Qt6Widgets.lib`; bootstrap clone pertama) |
 | `windeployqt` | terverifikasi ada (review 15-09-2026) — dipakai gate P1 dan P5 |
 | .NET SDK | HANYA untuk `vpk` CLI (app tetap C++/Qt murni); pin `10.0.400` di `global.json` (ada di host, sama seperti Citadel) |
 | `vpk` CLI | versi di-pin di `.config/dotnet-tools.json` (`rollForward: false`); wajib lolos `dotnet vpk --version` via skrip restore (P1) |
 | Velopack C++ | ZIP resmi dipulihkan ke `release/artifacts/dependencies/velopack`; versi dan hash dikunci di `Restore-Dependencies.ps1`, sama dengan `vpk` |
 | git | ada |
 
-`CMAKE_PREFIX_PATH=C:\Qt\6.8.3\msvc2022_64` untuk semua configure. Keputusan generator
+`development/Qt/6.8.3/msvc2022_64` untuk semua configure. Keputusan generator
 CMake (VS-generator vs NMake) diputuskan di P1 setelah cek versi CMake bawaan —
 fallback yang selalu jalan: `NMake Makefiles` dalam env `VsDevCmd`.
 
@@ -197,7 +197,7 @@ desain pengecualian di bawah (bukan asumsi, keduanya punya gate).
 > Gate merah = berhenti, catat di `docs/DECISIONS.md`, jangan lanjut ke fase berikut.
 > Build shell untuk semua perintah = Developer Prompt via:
 > `"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\Tools\VsDevCmd.bat" -arch=amd64 -no_logo`
-> dan setiap configure memakai `-DCMAKE_PREFIX_PATH=C:\Qt\6.8.3\msvc2022_64`.
+> dan setiap configure memakai Qt lokal di `development/Qt/6.8.3/msvc2022_64`.
 
 ### Konvensi global (semua fase)
 
@@ -260,9 +260,9 @@ Perintah (dari build shell, root repo `yuz-note/`):
 ```
 powershell -ExecutionPolicy Bypass -File tools/Restore-Dependencies.ps1
 "C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --version
-cmake -S . -B release/build -G "<generator-terpilih>" -DCMAKE_PREFIX_PATH=C:\Qt\6.8.3\msvc2022_64 -DCMAKE_BUILD_TYPE=Release
+cmake --preset dev
 cmake --build release/build --config Release
-C:\Qt\6.8.3\msvc2022_64\bin\windeployqt.exe release\build\src\app\Release\yuz-note.exe --dir release\artifacts\deploy-test
+development\Qt\6.8.3\msvc2022_64\bin\windeployqt.exe release\build\src\app\Release\yuz-note.exe --dir release\artifacts\deploy-test
 ```
 Gate: jendela terbuka + title benar + exe di `release/artifacts/deploy-test/` jalan (PATH Qt tidak
 diandalkan) + hook terpasang + restore skrip hijau.

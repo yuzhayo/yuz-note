@@ -2,6 +2,7 @@
 release/build/
 release/Releases/
 release/artifacts/
+
 build-*/
 cmake-build-*/
 out/

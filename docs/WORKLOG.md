@@ -26,7 +26,7 @@
   `hello.cpp` via `VsDevCmd -arch=amd64` → `YUZ-TOOLCHAIN-OK msvc=1951`.
 - Windows SDK 10.0.26100.0 (Include + Lib terverifikasi).
 - CMake bawaan VS 18 Community (4.3.1) mengenal generator `Visual Studio 18 2026`.
-- Qt 6.8.3 LTS `win64_msvc2022_64` di `C:\Qt\6.8.3\msvc2022_64` — 0,3 GB ramping.
+- Qt 6.8.3 LTS `win64_msvc2022_64` di `development/Qt/6.8.3/msvc2022_64` — 0,3 GB ramping.
 - `windeployqt` ada. `.NET SDK` baseline `10.0.400` hanya untuk `vpk` CLI;
   `global.json` memakai `latestPatch` dan pada 16-09-2026 meresolusikan SDK `10.0.401`.
 

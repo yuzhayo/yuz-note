@@ -62,10 +62,10 @@ $windeployqt = if ([string]::IsNullOrWhiteSpace($env:QT_DIR)) {
     Join-Path $env:QT_DIR 'bin\windeployqt.exe'
 }
 if (-not $windeployqt -or -not (Test-Path -LiteralPath $windeployqt -PathType Leaf)) {
-    $windeployqt = 'C:\Qt\6.8.3\msvc2022_64\bin\windeployqt.exe'
+    $windeployqt = Join-Path $repositoryRoot 'development\Qt\6.8.3\msvc2022_64\bin\windeployqt.exe'
 }
 if (-not (Test-Path -LiteralPath $windeployqt -PathType Leaf)) {
-    throw "windeployqt not found. Set QT_DIR or use default Qt path."
+    throw "windeployqt not found. Run development\\Setup-Development.ps1 or set QT_DIR."
 }
 
 Write-Host "Staging with windeployqt..."
