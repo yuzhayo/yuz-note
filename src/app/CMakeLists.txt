@@ -2,6 +2,10 @@ configure_file(
   "${CMAKE_SOURCE_DIR}/cmake/version.h.in"
   "${CMAKE_BINARY_DIR}/generated/version.h"
   @ONLY)
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/yuz-note.rc.in"
+  "${CMAKE_BINARY_DIR}/generated/yuz-note.rc"
+  @ONLY)
 
 add_executable(yuz-note WIN32
   main.cpp
@@ -13,7 +17,7 @@ add_executable(yuz-note WIN32
   FindBar.cpp
   SingleInstance.h
   SingleInstance.cpp
-  yuz-note.rc
+  "${CMAKE_BINARY_DIR}/generated/yuz-note.rc"
   "${CMAKE_BINARY_DIR}/generated/version.h")
 
 target_include_directories(yuz-note PRIVATE "${CMAKE_BINARY_DIR}/generated")

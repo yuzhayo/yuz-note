@@ -99,7 +99,8 @@ jobs:
         run: |
           cmake -S . -B release/build `
             -G 'Visual Studio 18 2026' -A x64 `
-            -DCMAKE_PREFIX_PATH="development/Qt/6.8.3/msvc2022_64"
+            -DCMAKE_PREFIX_PATH="development/Qt/6.8.3/msvc2022_64" `
+            -DYUZNOTE_VERSION='${{ steps.version.outputs.version }}'
 
       - name: Package release
         shell: pwsh

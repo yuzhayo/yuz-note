@@ -1,12 +1,11 @@
 #include <windows.h>
 
 // App icon
-IDI_ICON1 ICON "../../assets/icon.ico"
+IDI_ICON1 ICON "@CMAKE_SOURCE_DIR@/assets/icon.ico"
 
-// Version info
 VS_VERSION_INFO VERSIONINFO
-  FILEVERSION 0,1,0,0
-  PRODUCTVERSION 0,1,0,0
+  FILEVERSION @YUZNOTE_VERSION_COMMA@,0
+  PRODUCTVERSION @YUZNOTE_VERSION_COMMA@,0
   FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
   FILEFLAGS 0x0L
   FILEOS VOS_NT_WINDOWS32
@@ -19,11 +18,11 @@ VS_VERSION_INFO VERSIONINFO
       BEGIN
         VALUE "CompanyName", "Yuzhayo"
         VALUE "FileDescription", "yuz-note — Markdown opener"
-        VALUE "FileVersion", "0.1.0"
+        VALUE "FileVersion", "@YUZNOTE_VERSION@"
         VALUE "InternalName", "yuz-note"
         VALUE "OriginalFilename", "yuz-note.exe"
         VALUE "ProductName", "yuz-note"
-        VALUE "ProductVersion", "0.1.0"
+        VALUE "ProductVersion", "@YUZNOTE_VERSION@"
       END
     END
     BLOCK "VarFileInfo"
